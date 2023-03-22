@@ -1,25 +1,29 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const projects = [
-        {
-            title: 'Project 1',
-            description: 'Description of Project 1',
-            imageUrl: 'path/to/project1-image.jpg',
-            link: 'https://github.com/yourusername/project1',
-        },
-        // Add more projects here
-    ];
+document.addEventListener('DOMContentLoaded', () => {
+    const chatInputForm = document.querySelector('.chat-input');
+    const chatMessages = document.querySelector('.chat-messages');
+    const inputField = document.querySelector('.chat-input input');
 
-    const projectContainer = document.querySelector('.project-container');
+    function appendMessage(content, className) {
+        const message = document.createElement('div');
+        message.textContent = content;
+        message.classList.add('chat-message', className);
+        chatMessages.appendChild(message);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
-    projects.forEach((project) => {
-        const projectCard = document.createElement('div');
-        projectCard.classList.add('project-card');
-        projectCard.innerHTML = `
-            <img src="${project.imageUrl}" alt="${project.title}">
-            <h3>${project.title}</h3>
-            <p>${project.description}</p>
-            <a href="${project.link}" target="_blank">View on GitHub</a>
-        `;
-        projectContainer.appendChild(projectCard);
+    chatInputForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const message = inputField.value.trim();
+        if (message) {
+            appendMessage(message, 'user-message');
+            inputField.value = '';
+
+            // Simulate an AI response after a short delay
+            setTimeout(() => {
+                // Replace this with the actual API call and response
+                const aiResponse = `You said: ${message}`;
+                appendMessage(aiResponse, 'ai-message');
+            }, 1000);
+        }
     });
 });
