@@ -1,84 +1,123 @@
-const canvas = document.getElementById('game-board');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById('game');
+const context = canvas.getContext('2d');
 
-const scale = 20;
-const rows = canvas.height / scale;
-const columns = canvas.width / scale;
+const gridSize = 20;
+const tileSize = canvas.width / gridSize;
 
-let snake;
+let snake = [
+  { x: gridSize / 2, y: gridSize / 2 },
+];
+let food = getRandomPosition();
 
-(function setup() {
-    snake = new Snake();
-    fruit = new Fruit();
+let velocity = { x: 1, y: 0 };
+let newVelocity = { x: 1, y: 0 };
+let score = 0;
+let isPaused = false;
 
-    fruit.pickLocation();
+function gameLoop() {
+  if (!isPaused) {
+    velocity = { ...newVelocity };
 
-    window.setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        fruit.draw();
-        snake.update();
-        snake.draw();
+    updateSnake();
+    if (checkCollision()) {
+      gameOver();
+      return;
+    }
+    updateFood();
 
-        if (snake.eat(fruit)) {
-            fruit.pickLocation();
-        }
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-        snake.checkCollision();
-    }, 250);
-}());
+    drawSnake();
+    drawFood();
+    displayScore();
+  }
 
-function Snake() {
-    this.x = 0;
-    this.y = 0;
-    this.xSpeed = scale;
-    this.ySpeed = 0;
-
-    this.draw = function() {
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(this.x, this.y, scale, scale);
-    };
-
-    this.update = function() {
-        this.x += this.xSpeed;
-        this.y += this.ySpeed;
-
-        if (this.x >= canvas.width) this.x = 0;
-        if (this.y >= canvas.height) this.y = 0;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.y < 0) this.y = canvas.height;
-    };
-
-    this.eat = function(fruit) {
-        if (this.x === fruit.x && this.y === fruit.y) {
-            return true;
-        }
-        return false;
-    };
-
-    this.checkCollision = function() {
-        if (this.x < 0 || this.x >= canvas.width || this.y < 0 || this.y >= canvas.height) {
-            alert("Game Over!");
-            window.location.reload();
-        }
-    };
+  setTimeout(gameLoop, 100);
 }
 
-function Fruit() {
-    this.x;
-    this.y;
+function updateSnake() {
+  const head = { x: snake[0].x + velocity.x, y: snake[0].y + velocity.y };
 
-    this.pickLocation = function() {
-        this.x = (Math.floor(Math.random() * rows - 1) + 1) * scale;
-        this.y = (Math.floor(Math.random() * columns - 1) + 1) * scale;
-    };
+  head.x = (head.x + gridSize) % gridSize;
+  head.y = (head.y + gridSize) % gridSize;
 
-    this.draw = function() {
-        ctx.fillStyle = "#FF0000";
-        ctx.fillRect(this.x, this.y, scale, scale);
-    };
+  snake.unshift(head);
+  snake.pop();
 }
 
-window.addEventListener('keydown', (event) => {
-    const direction = event.key.replace('Arrow', '');
-    snake.changeDirection(direction);
+function checkCollision() {
+  for (let i = 1; i < snake.length; i++) {
+    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function updateFood() {
+  if (snake[0].x === food.x && snake[0].y === food.y) {
+    food = getRandomPosition();
+    snake.push({ ...snake[snake.length - 1] });
+    score++;
+  }
+}
+
+function drawSnake() {
+  context.fillStyle = 'green';
+  snake.forEach(segment => {
+    context.fillRect(segment.x * tileSize, segment.y * tileSize, tileSize, tileSize);
+  });
+}
+
+function drawFood() {
+  context.fillStyle = 'red';
+  context.fillRect(food.x * tileSize, food.y * tileSize, tileSize, tileSize);
+}
+
+function displayScore() {
+  context.fillStyle = 'white';
+  context.font = '16px Arial';
+  context.fillText('Score: ' + score, 10, 30);
+}
+
+function gameOver() {
+  context.fillStyle = 'white';
+  context.font = '32px Arial';
+  context.fillText('Game Over', canvas.width / 2 - 80, canvas.height / 2);
+
+  setTimeout(() => {
+    if (confirm('Restart the game?')) {
+      resetGame();
+    }
+  }, 500);
+}
+
+function resetGame() {
+    snake = [{ x: gridSize / 2, y: gridSize / 2}];
+    food = getRandomPosition();
+    velocity = { x: 1, y: 0 };
+    newVelocity = { x: 1, y: 0 };
+    score = 0;
+    gameLoop();
+}
+
+function getRandomPosition() {
+return {
+    x: Math.floor(Math.random() * gridSize),
+    y: Math.floor(Math.random() * gridSize)
+};
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'w' && velocity.y !== 1) newVelocity = { x: 0, y: -1 };
+  if (event.key === 'a' && velocity.x !== 1) newVelocity = { x: -1, y: 0 };
+  if (event.key === 's' && velocity.y !== -1) newVelocity = { x: 0, y: 1 };
+  if (event.key === 'd' && velocity.x !== -1) newVelocity = { x: 1, y: 0 };
+
+  if (event.key === 'Escape') {
+    isPaused = !isPaused;
+  }
 });
+
+
+gameLoop();
