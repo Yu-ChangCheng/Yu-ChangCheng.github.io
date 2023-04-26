@@ -120,4 +120,36 @@ document.addEventListener('keydown', (event) => {
 });
 
 
+// mobile Control
+let touchStartX;
+let touchStartY;
+
+function handleTouchStart(event) {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+}
+
+function handleTouchMove(event) {
+  const touchEndX = event.touches[0].clientX;
+  const touchEndY = event.touches[0].clientY;
+
+  const diffX = touchEndX - touchStartX;
+  const diffY = touchEndY - touchStartY;
+
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    if (diffX > 0 && velocity.x !== -1) newVelocity = { x: 1, y: 0 };
+    if (diffX < 0 && velocity.x !== 1) newVelocity = { x: -1, y: 0 };
+  } else {
+    if (diffY > 0 && velocity.y !== -1) newVelocity = { x: 0, y: 1 };
+    if (diffY < 0 && velocity.y !== 1) newVelocity = { x: 0, y: -1 };
+  }
+
+  touchStartX = touchEndX;
+  touchStartY = touchEndY;
+}
+
+document.addEventListener('keydown', handleKeyboard);
+canvas.addEventListener('touchstart', handleTouchStart);
+canvas.addEventListener('touchmove', handleTouchMove);
+
 gameLoop();
