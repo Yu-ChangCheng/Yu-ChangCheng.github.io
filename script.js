@@ -148,7 +148,7 @@ function handleTouchMove(event) {
   touchStartY = touchEndY;
 }
 
-document.addEventListener('keydown', handleKeyboard);
+
 canvas.addEventListener('touchstart', handleTouchStart);
 canvas.addEventListener('touchmove', handleTouchMove);
 
