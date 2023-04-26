@@ -15,6 +15,7 @@ let score = 0;
 let isPaused = false;
 
 function gameLoop() {
+  window.addEventListener('touchmove', preventScrolling, { passive: false });
   if (!isPaused) {
     velocity = { ...newVelocity };
 
@@ -81,6 +82,7 @@ function displayScore() {
 }
 
 function gameOver() {
+  window.removeEventListener('touchmove', preventScrolling);
   context.fillStyle = 'white';
   context.font = '32px Arial';
   context.fillText('Game Over', canvas.width / 2 - 80, canvas.height / 2);
@@ -121,6 +123,10 @@ document.addEventListener('keydown', (event) => {
 
 
 // mobile Control
+function preventScrolling(event) {
+  event.preventDefault();
+}
+
 let touchStartX;
 let touchStartY;
 
@@ -151,5 +157,7 @@ function handleTouchMove(event) {
 
 canvas.addEventListener('touchstart', handleTouchStart);
 canvas.addEventListener('touchmove', handleTouchMove);
+
+
 
 gameLoop();
