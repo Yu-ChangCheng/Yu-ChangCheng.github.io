@@ -37,6 +37,8 @@ main {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
 #game {
@@ -52,4 +54,28 @@ main {
   font-weight: bold;
   color: #333;
   margin-bottom: 1rem;
+}
+
+.rounded-button {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px 2px;
+    color: white;
+    background-color: #333;
+    border: none;
+    border-radius: 25px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.rounded-button:hover {
+    background-color: white;
+    color: black;
+}
+
+#start-game {
+    transition: opacity 0.5s ease-in-out;
 }

@@ -158,6 +158,26 @@ function handleTouchMove(event) {
 canvas.addEventListener('touchstart', handleTouchStart);
 canvas.addEventListener('touchmove', handleTouchMove);
 
+document.getElementById('start-game').addEventListener('click', function () {
+    const startButton = document.getElementById('start-game');
+    const gameContainer = document.getElementById('game-container');
 
+    // Fade out button
+    startButton.style.opacity = '0';
 
-gameLoop();
+    setTimeout(() => {
+        // Remove button after it's faded out
+        startButton.style.display = 'none';
+
+        // Make game container visible but transparent
+        gameContainer.style.display = 'block';
+
+        // After a short delay, fade in game container
+        setTimeout(() => {
+            gameContainer.style.opacity = '1';
+
+            // Start game after game container is visible
+            gameLoop();
+        }, 50);
+    }, 500); // Matches transition duration
+});
