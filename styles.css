@@ -1,81 +1,92 @@
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #1d1d1f;
+    background-color: #f5f5f7;
 }
 
 header {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 1rem;
+    background: linear-gradient(90deg, #264653 0%, #2a9d8f 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 1.5rem;
 }
 
-header nav {
-  margin-top: 1rem;
-}
 
-header nav a {
-  color: white;
-  text-decoration: none;
-  margin: 0 1rem;
-}
+    header h1 {
+        font-size: 2.0rem;
+    }
 
-header nav a:hover {
-  text-decoration: underline;
-}
+    header p {
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+    }
+
+    header nav {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+        header nav a {
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            header nav a:hover {
+                text-decoration: underline;
+            }
 
 main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
 }
 
 #game-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.0rem;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
 #game {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  position: relative;
-}
-
-#controls-hint {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 1rem;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    position: relative;
 }
 
 .rounded-button {
     display: inline-block;
-    padding: 12px 24px;
-    margin: 10px 2px;
-    color: white;
-    background-color: #333;
+    padding: 0.8rem 1.5rem;
+    margin: 1.0rem 0.2rem;
+    color: #ffffff;
+    background: linear-gradient(90deg, #0070c9 0%, #004999 100%);
     border: none;
-    border-radius: 25px;
+    border-radius: 0.5rem;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
-    transition-duration: 0.4s;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition-duration: 0.3s;
     cursor: pointer;
 }
 
-.rounded-button:hover {
-    background-color: white;
-    color: black;
-}
+    .rounded-button:hover {
+        background: linear-gradient(90deg, #004999 0%, #0070c9 100%);
+    }
 
-#start-game {
-    transition: opacity 0.5s ease-in-out;
+nav img {
+    height: 20px;
+    width: 20px;
 }
